@@ -52,4 +52,5 @@ now copy those two new string number into your hash file after $ and put other $
 
 Step 7 Hash Cat
 hashcat -a 0 -m 7100 hash worldlist.txt
+Check the hash.jpg.
 
