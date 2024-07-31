@@ -1,0 +1,2 @@
+sudo sysadminctl -addUser testuser -password test123! -fullName "Test User" -admin
+sudo pwpolicy -u testuser -gethashtypes
