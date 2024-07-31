@@ -1,0 +1,13 @@
+### Password Cracking
+
+## Introduction
+This projet shows the process of extracting and cracking password hashes on Mac OS. The main objective is to undertand the security mechanism.
+
+
+## Setup
+- **Target System ** :: Mac OS 12.++
+- **Attacker System** :: Mac OS 12.++
+- *Tools*: HashCat, dscl, SD card and plutil
+
+
+## Execution
